@@ -6,8 +6,25 @@ on:
       - "*"
 
 jobs:
+
+  create:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true # for now we only do pre-releases
+
   release:
     name: Release
+    needs: create # only run after release has been created
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -55,24 +72,13 @@ jobs:
           cp target/release/foo .
           tar czvf ${{ matrix.output }} target/release/foo
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true # for now we only do pre-releases
-
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ jobs.create.steps.create_release.outputs.upload_url }}
           asset_path: ./${{ matrix.output }}
           asset_name: ${{ matrix.output }}
           asset_content_type: ${{ matrix.content_type }}
