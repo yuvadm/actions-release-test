@@ -46,14 +46,14 @@ jobs:
         if: matrix.archive == 'zip'
         run: |
           cp target/release/foo.exe .
-          7z a ${{ matrix.output }} target/release/foo.exe
+          7z a ${{ matrix.output }} foo.exe
 
       - name: Build TAR
         id: build_tar
         if: matrix.archive == 'tar'
         run: |
           cp target/release/foo .
-          tar czvf ${{ matrix.output }} target/release/foo
+          tar czvf ${{ matrix.output }} foo
 
       - name: Upload
         uses: actions/upload-artifact@master
