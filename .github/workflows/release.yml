@@ -45,13 +45,15 @@ jobs:
         id: build_zip
         if: matrix.archive == 'zip'
         run: |
-          zip ${{ matrix.output }} target/release/foo.exe
+          cp target/release/foo.exe .
+          7z a ${{ matrix.output }} target/release/foo.exe
 
       - name: Build TAR
         id: build_tar
         if: matrix.archive == 'tar'
         run: |
-          tar czvf ${{ matrix.output }} target/release/foo
+          cp target/release/foo .
+          tar czvf ../../${{ matrix.output }} target/release/foo
 
       - name: Create Release
         id: create_release
