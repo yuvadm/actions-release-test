@@ -38,36 +38,36 @@ jobs:
       - name: Test
         run: cargo test --verbose
 
-      - name: Build ZIP
-        id: build_zip
-        if: matrix.archive == 'zip'
-        run: |
-          zip ${{ matrix.output }} target/release/streamlib.exe
+      # - name: Build ZIP
+      #   id: build_zip
+      #   if: matrix.archive == 'zip'
+      #   run: |
+      #     zip ${{ matrix.output }} target/release/streamlib.exe
 
-      - name: Build TAR
-        id: build_tar
-        if: matrix.archive == 'tar'
-        run: |
-          tar czvf ${{ matrix.output }} target/release/streamlib
+      # - name: Build TAR
+      #   id: build_tar
+      #   if: matrix.archive == 'tar'
+      #   run: |
+      #     tar czvf ${{ matrix.output }} target/release/streamlib
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true # for now we only do pre-releases
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: Release ${{ github.ref }}
+      #     draft: false
+      #     prerelease: true # for now we only do pre-releases
 
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ matrix.output }}
-          asset_name: ${{ matrix.output }}
-          asset_content_type: ${{ matrix.content_type }}
+      # - name: Upload Release Asset
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./${{ matrix.output }}
+      #     asset_name: ${{ matrix.output }}
+      #     asset_content_type: ${{ matrix.content_type }}
