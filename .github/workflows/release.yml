@@ -5,23 +5,23 @@ on: [push]
 jobs:
   release:
     name: Release
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macOS-latest, windows-latest, ubuntu-latest]
-        include:
-          - name: macOS-latest
-            archive: tar
-            output: streamlib-${{ github.ref }}-x86_64-apple-darwin.tar.gz
-            content_type: application/gzip
-          - name: windows-latest
-            archive: zip
-            output: streamlib-${{ github.ref }}-x86_64-pc-windows-msvc.zip
-            content_type: application/zip
-          - name: ubuntu-latest
-            archive: tar
-            output: streamlib-${{ github.ref }}-x86_64-unknown-linux-gnu.tar.gz
-            content_type: application/gzip
+    runs-on: ubuntu-latest #${{ matrix.os }}
+    # strategy:
+    #   matrix:
+    #     os: [macOS-latest, windows-latest, ubuntu-latest]
+    #     include:
+    #       - name: macOS-latest
+    #         archive: tar
+    #         output: streamlib-${{ github.ref }}-x86_64-apple-darwin.tar.gz
+    #         content_type: application/gzip
+    #       - name: windows-latest
+    #         archive: zip
+    #         output: streamlib-${{ github.ref }}-x86_64-pc-windows-msvc.zip
+    #         content_type: application/zip
+    #       - name: ubuntu-latest
+    #         archive: tar
+    #         output: streamlib-${{ github.ref }}-x86_64-unknown-linux-gnu.tar.gz
+    #         content_type: application/gzip
 
     steps:
       - name: Checkout
